@@ -1,0 +1,46 @@
+server:
+  port: 8080
+  compression:
+    enabled: false
+
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/multitenant
+    username: user_multitenant
+    password: user_multitenant
+    hikari:
+      connection-timeout: 20000
+      idle-timeout: 300000
+      minimum-idle: 5
+      maximum-pool-size: 20
+      max-lifetime: 1200000
+      auto-commit: true
+      connection-test-query: "select 1"
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp.use_jdbc_metadata_defaults: false
+        ddl-auto: none
+        format_sql: true
+        show_sql: true
+
+  jackson:
+    time-zone: America/Cuiaba
+    date-format: dd/MM/yyyy HH:mm:ss
+
+  flyway:
+    enabled: false
+    schemas: empresa001, empresa002, public
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari: DEBUG
+
