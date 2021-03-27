@@ -1,4 +1,4 @@
-package com.idcotton.app.config;
+package com.idcotton.app.config.flyway;
 
 import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;

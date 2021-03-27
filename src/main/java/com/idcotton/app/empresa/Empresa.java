@@ -22,6 +22,7 @@ public class Empresa extends BaseEntity {
     @Id
     @Column(name = "CODIGO")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "GENERETION_EMPRESA")
+    @EqualsAndHashCode.Include
     private Integer codigo;
 
     @Column(name = "NOME", length = 75, nullable = false, columnDefinition = "VARCHAR(75)")
