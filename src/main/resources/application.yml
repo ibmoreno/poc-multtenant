@@ -1,3 +1,6 @@
+app:
+  version: '@project.version@'
+
 server:
   port: 8080
   compression:
@@ -44,3 +47,6 @@ logging:
       zaxxer:
         hikari: DEBUG
 
+jwt:
+  secret: 8107eca19c1bd3d5222c97d19e63be89ca33b0c357c17f9033bb24fa8793da91
+  expiration: 60

@@ -1,7 +1,6 @@
 package com.idcotton.app.config.multitenant;
 
 import com.idcotton.app.MainApplication;
-import com.idcotton.app.config.FlywayMigrationInitializer;
 import org.hibernate.MultiTenancyStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
