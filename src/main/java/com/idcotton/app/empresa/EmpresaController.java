@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +22,13 @@ public class EmpresaController {
 
     private final EmpresaRepository empresaRepository;
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @GetMapping
     public ResponseEntity<List<Empresa>> buscarTodos() {
         return ResponseEntity.ok(empresaRepository.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @GetMapping(params = {"page", "size"})
     public ResponseEntity<Page<Empresa>> buscarTodosPaginado(Pageable pageable) {
         return ResponseEntity.ok(empresaRepository.findAll(pageable));

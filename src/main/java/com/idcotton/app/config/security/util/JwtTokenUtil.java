@@ -1,5 +1,6 @@
 package com.idcotton.app.config.security.util;
 
+import com.idcotton.app.config.multitenant.MultiTenantContext;
 import com.idcotton.app.config.security.JwtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
     static final String CLAIM_KEY_NOME = "nome";
     static final String CLAIM_KEY_EMAIL = "email";
     static final String CLAIM_KEY_ROLE = "role";
-    static final String CLAIM_KEY_AUDIENCE = "audience";
+    static final String CLAIM_KEY_TENANT = "tenant";
     static final String CLAIM_KEY_CREATED = "created";
 
     @Value("${jwt.secret}")
@@ -83,6 +84,7 @@ public class JwtTokenUtil implements Serializable {
         claims.put(CLAIM_KEY_NOME, jwtUser.getUsuario().getNomeCompleto());
         claims.put(CLAIM_KEY_USERNAME, jwtUser.getUsername());
         claims.put(CLAIM_KEY_EMAIL, jwtUser.getUsuario().getEmail());
+        claims.put(CLAIM_KEY_TENANT, MultiTenantContext.getTenantId());
         claims.put(CLAIM_KEY_ROLE, AuthorityUtils.authorityListToSet(jwtUser.getAuthorities()));
         claims.put(CLAIM_KEY_CREATED, new Date());
 
@@ -107,7 +109,7 @@ public class JwtTokenUtil implements Serializable {
     private boolean tokenExpirado(String token) {
         Date dataExpiracao = this.getExpirationDateFromToken(token);
         if (dataExpiracao == null) {
-            return false;
+            return true;
         }
         return dataExpiracao.before(new Date());
     }

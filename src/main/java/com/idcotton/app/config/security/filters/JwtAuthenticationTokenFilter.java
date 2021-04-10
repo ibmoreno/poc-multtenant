@@ -1,5 +1,6 @@
 package com.idcotton.app.config.security.filters;
 
+import com.idcotton.app.config.multitenant.MultiTenantInterceptor;
 import com.idcotton.app.config.security.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -42,19 +43,25 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (token != null && jwtTokenUtil.tokenValido(token)) {
 
             Claims claims = jwtTokenUtil.getClaimsFromToken(token);
-            if (claims != null && claims.get("role") != null) {
-
-                List<String> roles = claims.get("role", List.class);
-
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        claims.getSubject(), "", roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                return true;
-
+            if (claims == null && claims.get("role") == null) {
+                return false;
             }
+
+            String tenantId = claims.get("tenant", String.class);
+            if (tenantId == null && !tenantId.equals(request.getHeader(MultiTenantInterceptor.TENANT_HEADER_NAME))) {
+                return false;
+            }
+
+            List<String> roles = claims.get("role", List.class);
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    claims.getSubject(), "", roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            return true;
+
         }
 
         return false;
