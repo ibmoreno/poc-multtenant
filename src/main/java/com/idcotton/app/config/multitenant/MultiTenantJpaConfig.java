@@ -1,7 +1,6 @@
 package com.idcotton.app.config.multitenant;
 
 import com.idcotton.app.MainApplication;
-import com.idcotton.app.config.FlywayMigrationInitializer;
 import org.hibernate.MultiTenancyStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
@@ -27,7 +26,8 @@ public class MultiTenantJpaConfig {
 
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaProperties jpaProperties,
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
+                                                                       JpaProperties jpaProperties,
                                                                        MultiTenantConnectionProvider multiTenantConnectionProvider,
                                                                        CurrentTenantIdentifierResolver tenantIdentifierResolver) {
 
