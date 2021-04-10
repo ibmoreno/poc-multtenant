@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MultiTenantInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String TENANT_HEADER_NAME = "X-TENANT-ID";
+    public static final String TENANT_HEADER_NAME = "X-TENANT-ID";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

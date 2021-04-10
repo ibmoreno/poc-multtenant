@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
@@ -31,7 +32,8 @@ public class Empresa extends BaseEntity {
     @Column(name = "FANTASIA", length = 75, nullable = false, columnDefinition = "VARCHAR(75)")
     private String fantasia;
 
-    @Column(name = "CNPJ", length = 75, nullable = false, columnDefinition = "VARCHAR(75)")
+    @Length(max = 14)
+    @Column(name = "CNPJ", length = 14, nullable = false, columnDefinition = "VARCHAR(75)")
     private String cnpj;
 
 
