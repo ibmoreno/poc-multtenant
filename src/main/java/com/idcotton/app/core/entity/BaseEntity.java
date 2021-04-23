@@ -20,12 +20,12 @@ public abstract class BaseEntity implements Serializable {
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATA_CADASTRADO", nullable = false, updatable = true)
+    @Column(name = "DATA_CADASTRADO", nullable = false)
     protected Date cadastrado;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATA_ATUALIZADO", nullable = false, updatable = true)
+    @Column(name = "DATA_ATUALIZADO", nullable = false)
     protected Date atualizado;
 
     @PrePersist

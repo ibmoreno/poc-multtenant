@@ -8,7 +8,7 @@ import java.util.Optional;
 @Component
 public class MultiTenantIdentifierResolver implements CurrentTenantIdentifierResolver {
 
-    public static String DEFAULT_TENANT_ID = "public";
+    public static String DEFAULT_TENANT_ID = "dataSource";
 
     @Override
     public String resolveCurrentTenantIdentifier() {

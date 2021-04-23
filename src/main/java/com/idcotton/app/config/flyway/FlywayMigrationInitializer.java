@@ -7,22 +7,24 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class FlywayMigrationInitializer {
 
-    private final DataSource dataSource;
-    private final FlywayConfigProperties flywayConfigProperties;
+// TODO: CONFIGURAR DEPOIS
 
-    @PostConstruct
-    public void migrate() {
-        flywayConfigProperties.getSchemas().forEach(schema -> {
-            Flyway flyway = Flyway.configure()
-                    .schemas(schema)
-                    .baselineOnMigrate(Boolean.FALSE)
-                    .dataSource(dataSource).load();
-            flyway.migrate();
-        });
-    }
+//    private final DataSource dataSource;
+//    private final FlywayConfigProperties flywayConfigProperties;
+//
+//    @PostConstruct
+//    public void migrate() {
+//        flywayConfigProperties.getSchemas().forEach(schema -> {
+//            Flyway flyway = Flyway.configure()
+//                    .schemas(schema)
+//                    .baselineOnMigrate(Boolean.FALSE)
+//                    .dataSource(dataSource).load();
+//            flyway.migrate();
+//        });
+//    }
 
 }

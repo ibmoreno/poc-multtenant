@@ -1,57 +1,38 @@
 package com.idcotton.app.config.multitenant;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
+import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-@Component
+//@Component
 @RequiredArgsConstructor
-public class MultiTenantDataSourceConnectionProvider implements MultiTenantConnectionProvider {
+public class MultiTenantDataSourceConnectionProvider extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
     private static final long serialVersionUID = 8098234728145424794L;
 
-    private final DataSource dataSource;
+    private final MultiTenantDataSource tenantDataSource;
+    private final DataSource masterDataSource;
+
+    private Map<String, DataSource> mapDataSources;
 
     @Override
-    public Connection getAnyConnection() throws SQLException {
-        return this.dataSource.getConnection();
+    protected DataSource selectAnyDataSource() {
+        return this.masterDataSource;
     }
 
     @Override
-    public void releaseAnyConnection(Connection connection) throws SQLException {
-        connection.close();
-    }
+    protected DataSource selectDataSource(String tenantIdentifier) {
 
-    @Override
-    public Connection getConnection(String tenantIdentifier) throws SQLException {
-        final Connection connection = getAnyConnection();
-        connection.setSchema(tenantIdentifier);
-        return connection;
-    }
+        if (this.mapDataSources == null) {
+            this.mapDataSources = new HashMap<>();
+            this.mapDataSources.putAll(tenantDataSource.getTodosDataSource());
+        }
 
-    @Override
-    public void releaseConnection(String schema, Connection connection) throws SQLException {
-        connection.setSchema(MultiTenantIdentifierResolver.DEFAULT_TENANT_ID);
-        releaseAnyConnection(connection);
-    }
+        return this.mapDataSources.get(tenantIdentifier) != null ? this.mapDataSources.get(tenantIdentifier) : this.masterDataSource;
 
-    @Override
-    public boolean supportsAggressiveRelease() {
-        return true;
     }
-
-    @Override
-    public boolean isUnwrappableAs(Class aClass) {
-        return false;
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> aClass) {
-        return null;
-    }
-
 }

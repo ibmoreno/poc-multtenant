@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class MultiTenantJpaConfig {
 
     @Bean
@@ -31,15 +31,15 @@ public class MultiTenantJpaConfig {
                                                                        MultiTenantConnectionProvider multiTenantConnectionProvider,
                                                                        CurrentTenantIdentifierResolver tenantIdentifierResolver) {
 
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan(MainApplication.class.getPackage().getName());
-        em.setJpaVendorAdapter(jpaVendorAdapter());
-
         Map<String, Object> jpaPropertiesMap = new HashMap<>(jpaProperties.getProperties());
         jpaPropertiesMap.put(Environment.MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
         jpaPropertiesMap.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProvider);
         jpaPropertiesMap.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, tenantIdentifierResolver);
+
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource);
+        em.setPackagesToScan(MainApplication.class.getPackage().getName());
+        em.setJpaVendorAdapter(jpaVendorAdapter());
         em.setJpaPropertyMap(jpaPropertiesMap);
 
         return em;

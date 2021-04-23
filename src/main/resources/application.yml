@@ -9,14 +9,14 @@ server:
 spring:
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/multitenant
-    username: user_multitenant
-    password: user_multitenant
+    url: jdbc:postgresql://localhost:5432/multitenant_master
+    username: user_multitenant_master
+    password: user_multitenant_master
     hikari:
       connection-timeout: 20000
       idle-timeout: 300000
-      minimum-idle: 5
-      maximum-pool-size: 20
+      minimum-idle: 1
+      maximum-pool-size: 5
       max-lifetime: 1200000
       auto-commit: true
       connection-test-query: "select 1"
@@ -39,7 +39,6 @@ spring:
 
   flyway:
     enabled: false
-    schemas: empresa001, empresa002, public
 
 logging:
   level:
